@@ -22,3 +22,12 @@
 
 /datum/tgs_chat_command/sharktest/alias
 		name = "coin"
+
+//modded fax code to properly handle non existing files before accessing the void
+/datum/tgs_chat_command/readfax/Run(sender, params)
+	var/list/all_params = splittext(params, " ")
+	var/faxid = all_params[1]
+	if(!all_params[1] || !fexists("[config.fax_export_dir]/fax_[faxid].html"))
+		return "I’m sorry Dave, I’m afraid I can’t do that"
+	var/faxmsg = return_file_text("[config.fax_export_dir]/fax_[faxid].html")
+	return "FAX: ```[strip_html_properly(faxmsg)]```"
